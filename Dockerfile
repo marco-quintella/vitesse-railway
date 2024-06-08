@@ -8,8 +8,8 @@ WORKDIR /app
 RUN corepack enable
 
 COPY .npmrc package.json pnpm-lock.yaml ./
-RUN --mount=type=cache,id="s/$RAILWAY_SERVICE_ID-/root/.local/share/pnpm/store/v3",target=/root/.local/share/pnpm/store/v3 \
-    pnpm install --frozen-lockfile
+# RUN --mount=type=cache,id="s/$RAILWAY_SERVICE_ID-/root/.local/share/pnpm/store/v3",target=/root/.local/share/pnpm/store/v3 \
+#     pnpm install --frozen-lockfile
 
 COPY . .
 RUN pnpm build
