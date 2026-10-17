@@ -7,6 +7,9 @@ const { t } = useI18n()
 watchEffect(() => {
   user.setNewName(route.params.name)
 })
+useHead({
+  title: () => t('intro.hi', { name: user.savedName }),
+})
 </script>
 
 <template>
@@ -23,7 +26,7 @@ watchEffect(() => {
     </p>
 
     <template v-if="user.otherNames.length">
-      <p mt-4 text-sm>
+      <div mt-4 text-sm>
         <span opacity-75>{{ t('intro.aka') }}:</span>
         <ul>
           <li v-for="otherName in user.otherNames" :key="otherName">
@@ -32,12 +35,12 @@ watchEffect(() => {
             </RouterLink>
           </li>
         </ul>
-      </p>
+      </div>
     </template>
 
     <div>
       <button
-        m="3 t6" text-sm btn
+        m="3 t6" btn text-sm
         @click="router.back()"
       >
         {{ t('button.back') }}

@@ -12,6 +12,9 @@ function go() {
 }
 
 const { t } = useI18n()
+useHead({
+  title: () => t('button.home'),
+})
 </script>
 
 <template>
@@ -40,7 +43,7 @@ const { t } = useI18n()
 
     <div>
       <button
-        m-3 text-sm btn
+        m-3 btn text-sm
         :disabled="!name"
         @click="go"
       >

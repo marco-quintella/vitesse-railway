@@ -1,30 +1,37 @@
 import path from 'node:path'
-import { defineConfig } from 'vite'
-import Vue from '@vitejs/plugin-vue'
-import generateSitemap from 'vite-ssg-sitemap'
-import Layouts from 'vite-plugin-vue-layouts'
-import Components from 'unplugin-vue-components/vite'
-import AutoImport from 'unplugin-auto-import/vite'
-import Markdown from 'unplugin-vue-markdown/vite'
-import VueMacros from 'unplugin-vue-macros/vite'
 import VueI18n from '@intlify/unplugin-vue-i18n/vite'
-import { VitePWA } from 'vite-plugin-pwa'
-import VueDevTools from 'vite-plugin-vue-devtools'
+import Shiki from '@shikijs/markdown-exit'
+import { unheadVueComposablesImports } from '@unhead/vue'
+import Vue from '@vitejs/plugin-vue'
 import LinkAttributes from 'markdown-it-link-attributes'
 import Unocss from 'unocss/vite'
-import Shiki from '@shikijs/markdown-it'
-import WebfontDownload from 'vite-plugin-webfont-dl'
-import VueRouter from 'unplugin-vue-router/vite'
-import { VueRouterAutoImports } from 'unplugin-vue-router'
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import Markdown from 'unplugin-vue-markdown/vite'
+import { defineConfig } from 'vite'
+import { VitePWA } from 'vite-plugin-pwa'
+import VueDevTools from 'vite-plugin-vue-devtools'
+import Layouts from 'vite-plugin-vue-layouts'
+import generateSitemap from 'vite-ssg-sitemap'
+import VueMacros from 'vue-macros/vite'
+import { VueRouterAutoImports } from 'vue-router/unplugin'
+import VueRouter from 'vue-router/vite'
+import 'vitest/config'
 
 export default defineConfig({
   resolve: {
     alias: {
-      '~/': `${path.resolve(__dirname, 'src')}/`,
+      '~/': `${path.resolve(import.meta.dirname, 'src')}/`,
     },
   },
 
   plugins: [
+    // https://github.com/vuejs/router
+    VueRouter({
+      extensions: ['.vue', '.md'],
+      dts: 'src/route-map.d.ts',
+    }),
+
     VueMacros({
       plugins: {
         vue: Vue({
@@ -33,22 +40,17 @@ export default defineConfig({
       },
     }),
 
-    // https://github.com/posva/unplugin-vue-router
-    VueRouter({
-      extensions: ['.vue', '.md'],
-      dts: 'src/typed-router.d.ts',
-    }),
-
     // https://github.com/JohnCampionJr/vite-plugin-vue-layouts
     Layouts(),
 
     // https://github.com/antfu/unplugin-auto-import
     AutoImport({
+      include: [/\.[jt]sx?$/, /\.vue$/, /\.vue\?vue/, /\.md$/],
       imports: [
         'vue',
         'vue-i18n',
-        '@vueuse/head',
         '@vueuse/core',
+        unheadVueComposablesImports,
         VueRouterAutoImports,
         {
           // add any other imports you were relying on
@@ -81,15 +83,16 @@ export default defineConfig({
     Markdown({
       wrapperClasses: 'prose prose-sm m-auto text-left',
       headEnabled: true,
-      async markdownItSetup(md) {
-        md.use(LinkAttributes, {
+      markdownSetup(md) {
+        // markdown-exit supports markdown-it plugins at runtime.
+        md.use(LinkAttributes as unknown as Parameters<typeof md.use>[0], {
           matcher: (link: string) => /^https?:\/\//.test(link),
           attrs: {
             target: '_blank',
             rel: 'noopener',
           },
         })
-        md.use(await Shiki({
+        md.use(Shiki({
           defaultColor: false,
           themes: {
             light: 'vitesse-light',
@@ -133,11 +136,8 @@ export default defineConfig({
       runtimeOnly: true,
       compositionOnly: true,
       fullInstall: true,
-      include: [path.resolve(__dirname, 'locales/**')],
+      include: [path.resolve(import.meta.dirname, 'locales/**')],
     }),
-
-    // https://github.com/feat-agency/vite-plugin-webfont-dl
-    WebfontDownload(),
 
     // https://github.com/webfansplz/vite-plugin-vue-devtools
     VueDevTools(),
@@ -153,7 +153,7 @@ export default defineConfig({
   ssgOptions: {
     script: 'async',
     formatting: 'minify',
-    crittersOptions: {
+    beastiesOptions: {
       reduceInlineStyles: false,
     },
     onFinished() {

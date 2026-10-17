@@ -20,18 +20,22 @@
 		format json # set access log format to json mode
 	}
 
-	# health check for railway
-	respond /health 200
+	# health check for railway. `respond /health 200` is a body, not a path match.
+	handle /health {
+		respond "ok" 200
+	}
 
-	# serve from the 'dist' folder (Vite builds into the 'dist' folder)
-	root * dist
+	handle {
+		# serve from the 'dist' folder (vite-ssg builds into the 'dist' folder)
+		root * dist
 
-	# enable gzipping responses
-	encode gzip
+		# enable gzipping responses
+		encode gzip
 
-	# serve files from 'dist'
-	file_server
+		# vite-ssg writes /about.html, so extensionless routes must try that file
+		try_files {path} {path}.html {path}/index.html /index.html
 
-	# if path doesn't exist, redirect it to 'index.html' for client side routing
-	try_files {path} /index.html
+		# serve files from 'dist'
+		file_server
+	}
 }

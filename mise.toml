@@ -1,0 +1,5 @@
+[tools]
+node = "24"
+pnpm = "10.30.2"
+# Caddy is the process Railway starts. Railpack installs mise tools into the runtime image.
+"aqua:caddyserver/caddy" = "2.11.7"
