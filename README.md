@@ -1,16 +1,3 @@
----
-title: Vue Vitesse [Oct 26]
-description: Opinionated Vite + Vue starter (October 2026). Vue 3, Vite 8, UnoCSS, served by Caddy.
-tags:
-  - Node
-  - Vue 3
-  - Vite
-  - TypeScript
-  - Markdown
-  - PWA
-  - Caddy
----
-
 # Deploy and Host Vue Vitesse on Railway
 
 Opinionated Vite + Vue starter, synced with [antfu-collective/vitesse](https://github.com/antfu-collective/vitesse) at `a878526` (6 Oct 2026). One click builds the static site and serves it with Caddy.
@@ -78,7 +65,7 @@ Requires Node.js 22.22.2+, 24.15.0+, or 26+. This snapshot includes Vite 8, Vue 
 
 - 🗒 [Markdown Support](https://github.com/unplugin/unplugin-vue-markdown)
 
-- 🔥 Use the [new `<script setup>` syntax](https://github.com/vuejs/rfcs/pull/227)
+- 🔥 Use the [new script setup syntax](https://github.com/vuejs/rfcs/pull/227)
 
 - 📥 [APIs auto importing](https://github.com/antfu/unplugin-auto-import) - use Composition API and others directly
 
@@ -123,7 +110,7 @@ Requires Node.js 22.22.2+, 24.15.0+, or 26+. This snapshot includes Vite 8, Vue 
 
 ### Coding Style
 
-- Use Composition API with [`<script setup>` SFC syntax](https://github.com/vuejs/rfcs/pull/227)
+- Use Composition API with [script setup SFC syntax](https://github.com/vuejs/rfcs/pull/227)
 - [ESLint](https://eslint.org/) with [@antfu/eslint-config](https://github.com/antfu/eslint-config), single quotes, no semi.
 
 ### Dev tools
@@ -137,7 +124,7 @@ Requires Node.js 22.22.2+, 24.15.0+, or 26+. This snapshot includes Vite 8, Vue 
 - [Caddy](https://caddyserver.com/) - serves the production build on Railway
 - [VS Code Extensions](./.vscode/extensions.json)
   - [Vite](https://marketplace.visualstudio.com/items?itemName=antfu.vite) - Fire up Vite server automatically
-  - [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) - Vue 3 `<script setup>` IDE support
+  - [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) - Vue 3 script setup IDE support
   - [Iconify IntelliSense](https://marketplace.visualstudio.com/items?itemName=antfu.iconify) - Icon inline display and autocomplete
   - [i18n Ally](https://marketplace.visualstudio.com/items?itemName=lokalise.i18n-ally) - All in one i18n support
   - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
